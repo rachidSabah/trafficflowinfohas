@@ -26079,3 +26079,4 @@ export default function App() {
 }
 
 // v36.0 Build Trigger - GA4 Attribution Fix, Realistic Device Distribution, Debug Logging
+// v41.0 Traffic Mode Optimizer with Pulse configuration
