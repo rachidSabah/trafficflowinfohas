@@ -15457,6 +15457,153 @@ End of Report
                 <StatCard title="HEALTH" value="98%" icon={<HeartPulse size={24} />} color="text-rose-500" subtext="Latency < 40ms" />
               </div>
               
+              {/* Traffic Mode Optimizer Panel - v41.0 */}
+              <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6 rounded-3xl border border-indigo-100 shadow-sm">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-sm font-bold uppercase text-indigo-600 flex items-center gap-2">
+                      <Zap size={16} className="text-amber-500" />
+                      Traffic Mode Optimizer
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1">Optimize traffic patterns for trending achievements</p>
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold border border-emerald-200 flex items-center gap-1">
+                    <CheckCircle2 size={12} />
+                    Active
+                  </span>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  {/* Current Mode Display */}
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Current Mode</div>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        trafficMode === 'optimal' ? 'bg-blue-100' :
+                        trafficMode === 'stealth' ? 'bg-slate-800' : 'bg-slate-100'
+                      }`}>
+                        {trafficMode === 'optimal' ? <Rocket size={20} className="text-blue-600" /> :
+                         trafficMode === 'stealth' ? <Shield size={20} className="text-white" /> :
+                         <Activity size={20} className="text-slate-600" />}
+                      </div>
+                      <div>
+                        <div className="text-lg font-black text-slate-800">{trafficMode.toUpperCase()}</div>
+                        <div className="text-[10px] text-slate-500">
+                          {trafficMode === 'optimal' ? 'Pulse patterns active' :
+                           trafficMode === 'stealth' ? 'Ultra-low detection' : 'Standard flow'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Pulse Pattern Status */}
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Pulse Patterns</div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-slate-600">Peak Hours</span>
+                        <span className="text-xs font-bold text-blue-600">
+                          {campaigns.filter(c => c.status === 'active' && c.trafficPattern === 'Pulse').length > 0 ? '10am, 2pm, 7pm' : '--'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-slate-600">Rest Periods</span>
+                        <span className="text-xs font-bold text-emerald-600">Auto</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-slate-600">Cycle Duration</span>
+                        <span className="text-xs font-bold text-purple-600">
+                          {campaigns.filter(c => c.status === 'active' && c.trafficPattern === 'Pulse').length > 0 ? '4h' : '--'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Quick Actions */}
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Quick Actions</div>
+                    <div className="space-y-2">
+                      <button 
+                        onClick={() => {
+                          setCampaigns(prev => prev.map(c => {
+                            if (c.status === 'active') {
+                              return { 
+                                ...c, 
+                                trafficPattern: 'Pulse' as const,
+                                trafficPatternConfig: {
+                                  burstIntensity: 'medium' as const,
+                                  cycleDuration: 4,
+                                  peakHours: [10, 14, 19],
+                                  restPeriodsEnabled: true,
+                                  optimalPresetApplied: true
+                                }
+                              };
+                            }
+                            return c;
+                          }));
+                          addToast?.('✅ Pulse patterns applied to all active campaigns!', 'success');
+                        }}
+                        className="w-full py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-[10px] font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-md flex items-center justify-center gap-1"
+                      >
+                        <Zap size={12} />
+                        Apply Optimal Preset
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setCampaigns(prev => prev.map(c => {
+                            if (c.status === 'active') {
+                              return { 
+                                ...c, 
+                                trafficPattern: 'Linear' as const,
+                                trafficPatternConfig: {
+                                  optimalPresetApplied: false
+                                }
+                              };
+                            }
+                            return c;
+                          }));
+                          addToast?.('Reset to Linear traffic pattern', 'info');
+                        }}
+                        className="w-full py-2 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold hover:bg-slate-200 transition-colors flex items-center justify-center gap-1"
+                      >
+                        <RotateCcw size={12} />
+                        Reset to Linear
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Pattern Distribution Stats */}
+                <div className="mt-4 pt-4 border-t border-indigo-100">
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-xl font-black text-slate-800">
+                        {campaigns.filter(c => c.status === 'active').length}
+                      </div>
+                      <div className="text-[9px] text-slate-500 uppercase">Active Campaigns</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-black text-purple-600">
+                        {campaigns.filter(c => c.trafficPattern === 'Pulse').length}
+                      </div>
+                      <div className="text-[9px] text-slate-500 uppercase">Pulse Mode</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-black text-blue-600">
+                        {campaigns.filter(c => c.trafficPattern === 'Viral').length}
+                      </div>
+                      <div className="text-[9px] text-slate-500 uppercase">Viral Mode</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xl font-black text-emerald-600">
+                        {campaigns.filter(c => c.trafficPatternConfig?.optimalPresetApplied).length}
+                      </div>
+                      <div className="text-[9px] text-slate-500 uppercase">Optimized</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               {/* Traffic Trend Chart - Hit Velocity Visualization */}
               <div className="bg-white p-6 rounded-3xl border shadow-sm">
                 <div className="flex justify-between items-center mb-4">
