@@ -1541,7 +1541,7 @@ const HumanBehaviorSimulator = {
 };
 
 // ============================================================
-// BEHAVIOR PATTERN SIMULATION CONFIGURATION (v36.0)
+// BEHAVIOR PATTERN SIMULATION CONFIGURATION (v41.0)
 // Comprehensive user behavior simulation for organic traffic
 // ============================================================
 
@@ -10848,7 +10848,7 @@ interface Campaign {
   // Referrer category filter (for auto mode)
   referrerCategories?: ('search' | 'social' | 'direct' | 'email' | 'ai')[];
   
-  // ========== Behavior Pattern Simulation Configuration (v36.0) ==========
+  // ========== Behavior Pattern Simulation Configuration (v41.0) ==========
   // Engagement Level Preset
   engagementLevel?: 'passive' | 'normal' | 'active' | 'highly_active';
   readingBehavior?: 'skimmer' | 'normal' | 'thorough';
@@ -13251,7 +13251,7 @@ const MainContent = () => {
     const cid = hitCid;
     const sid = hitSid;
     
-    // v36.0 GA4 FIX: Default to Google for proper GA4 attribution
+    // v41.0 GA4 FIX: Default to Google for proper GA4 attribution
     const DEFAULT_SOURCE = 'google';
     const DEFAULT_MEDIUM = 'organic';
     const DEFAULT_REFERRER = 'https://www.google.com/';
@@ -13421,7 +13421,7 @@ const MainContent = () => {
       }
     }
 
-    // v36.0 GA4 FIX: ENFORCE non-empty source/medium/referrer
+    // v41.0 GA4 FIX: ENFORCE non-empty source/medium/referrer
     // Also convert '(direct)' to 'google' for proper GA4 attribution
     if (!source || source.trim() === '' || source === '(direct)') {
       source = DEFAULT_SOURCE;
@@ -13452,9 +13452,9 @@ const MainContent = () => {
     // GA4 Fix: Add ci (Campaign ID) parameter for better attribution
     const campaignId = payload.id || `camp_${Date.now()}`;
 
-    // v36.0: GA4 Debug Logging - Enable with window.TF_DEBUG = true
+    // v41.0: GA4 Debug Logging - Enable with window.TF_DEBUG = true
     if (typeof window !== 'undefined' && (window as any).TF_DEBUG) {
-      console.log('🔍 TrafficFlow v36.0 GA4 Hit Debug:', {
+      console.log('🔍 TrafficFlow v41.0 GA4 Hit Debug:', {
         eventName,
         source,
         medium,
@@ -13496,12 +13496,12 @@ const MainContent = () => {
     if (eventName === 'page_view') {
         params.append('_ss', '1');
         params.append('_fv', '1');
-        params.append('_s', '1'); // v36.0: Session flag - CRITICAL for GA4 source attribution
+        params.append('_s', '1'); // v41.0: Session flag - CRITICAL for GA4 source attribution
     }
 
     const trackingUrl = `https://www.google-analytics.com/g/collect?${params.toString()}`;
 
-    // v36.0: Always log page_view hits for debugging GA4 attribution
+    // v41.0: Always log page_view hits for debugging GA4 attribution
     if (eventName === 'page_view') {
         console.log('📊 GA4 HIT:', {
             ga4Id: payload.ga4Id,
@@ -13610,7 +13610,7 @@ const MainContent = () => {
            browserPreference: job.browserPreference,
            platformPreference: job.platformPreference,
            deviceTypePreference: job.deviceTypePreference,
-           // v36.0: Default mobileRatio to 0.45 (45% mobile traffic) if not specified
+           // v41.0: Default mobileRatio to 0.45 (45% mobile traffic) if not specified
           mobileRatio: job.mobileRatio ?? 0.45,
            countryCode: countryCode
          });
@@ -13707,7 +13707,7 @@ const MainContent = () => {
        }));
        
        // ============================================================
-       // ENHANCED: HUMAN BEHAVIOR PARAMETERS (v36.0)
+       // ENHANCED: HUMAN BEHAVIOR PARAMETERS (v41.0)
        // ============================================================
        
        // Determine content length based on URL pattern
@@ -13715,7 +13715,7 @@ const MainContent = () => {
            url.includes('/blog') || url.includes('/article') ? 'long' :
            url.includes('/product') || url.includes('/service') ? 'medium' : 'short';
        
-       // Check if campaign has behavior pattern configuration (v36.0)
+       // Check if campaign has behavior pattern configuration (v41.0)
        let sessionLength: number;
        let pagesPerSession: number;
        let scrollDepths: number[];
@@ -13723,7 +13723,7 @@ const MainContent = () => {
        let shouldBounce: boolean;
        
        if (job.engagementLevel || job.scrollDepthMode) {
-         // Use new Behavior Pattern Simulator (v36.0)
+         // Use new Behavior Pattern Simulator (v41.0)
          const behaviorConfig: Partial<BehaviorPatternConfig> = {
            engagementLevel: job.engagementLevel,
            readingBehavior: job.readingBehavior,
@@ -13941,7 +13941,7 @@ const MainContent = () => {
 
            setLogs(prev => [newLog, ...prev].slice(0, 50));
 
-           // v36.0: Update Real-Time Events for Analytics Hub
+           // v41.0: Update Real-Time Events for Analytics Hub
            const eventTime = new Date();
            const timeStr = eventTime.toLocaleTimeString('en-US', { hour12: false });
            const pagePath = (() => { try { return new URL(url).pathname || '/'; } catch { return '/'; } })();
@@ -14896,7 +14896,7 @@ Report generated for: ${domain}
       utmTerm: formData.get('utmTerm') as string || undefined,
       injectKeywordInReferrer: formData.get('injectKeywordInReferrer') === 'on',
       
-      // ========== Behavior Pattern Simulation Configuration (v36.0) ==========
+      // ========== Behavior Pattern Simulation Configuration (v41.0) ==========
       engagementLevel: (formData.get('engagementLevel') as 'passive' | 'normal' | 'active' | 'highly_active') || 'normal',
       readingBehavior: (formData.get('readingBehavior') as 'skimmer' | 'normal' | 'thorough') || 'normal',
       interactionIntensity: parseInt(formData.get('interactionIntensity') as string) || 50,
@@ -15205,7 +15205,7 @@ End of Report
               <h1 className="text-2xl font-black text-white">TrafficFlow</h1>
               <p className="text-xs text-slate-300">Enterprise SEO Traffic Management</p>
             </div>
-            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/20 px-2 py-0.5 rounded-full">v36.0 Enterprise</span>
+            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/20 px-2 py-0.5 rounded-full">v41.0 Enterprise</span>
           </div>
           
           {loginError && (
@@ -15257,7 +15257,7 @@ End of Report
     <div className="h-screen flex bg-slate-50 dark:bg-slate-900 font-sans text-sm overflow-hidden text-slate-800 dark:text-slate-200">
       <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col z-20 shadow-2xl">
         <div className="p-6 pb-2">
-          <div className="flex items-center gap-3 mb-4"><CustomIcons.Logo /><div><h1 className="font-black text-lg">TrafficFlow</h1><span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">v36.0 Ent</span></div></div>
+          <div className="flex items-center gap-3 mb-4"><CustomIcons.Logo /><div><h1 className="font-black text-lg">TrafficFlow</h1><span className="text-[10px] font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">v41.0 Ent</span></div></div>
         </div>
         <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-0.5">
           <SidebarItem icon={LayoutDashboard} label="Dashboard" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
@@ -17259,7 +17259,7 @@ End of Report
                           const report = `
 ================================================================================
                         TECHNICAL SEO AUDIT REPORT
-                        TrafficFlow Enterprise v36.0
+                        TrafficFlow Enterprise v41.0
 ================================================================================
 
 Generated: ${reportDate} at ${reportTime}
@@ -17440,7 +17440,7 @@ ${siteAuditResults.issues.filter(i => i.severity === 'info').map(i => `□ Revie
 ================================================================================
                             END OF REPORT
 ================================================================================
-Report generated by TrafficFlow Enterprise v36.0
+Report generated by TrafficFlow Enterprise v41.0
 Audited Domain: ${domain}
 For support: support@trafficflow.enterprise
 `;
@@ -18426,7 +18426,7 @@ For support: support@trafficflow.enterprise
                         const report = `
 ================================================================================
                         BACKLINK AUTHORITY REPORT
-                        TrafficFlow Enterprise v36.0
+                        TrafficFlow Enterprise v41.0
 ================================================================================
 
 Generated: ${new Date().toLocaleString()}
@@ -25588,7 +25588,7 @@ Bounce Rate: ${(Math.random() * 30 + 20).toFixed(1)}%
                   <div className="space-y-4">
                      <h4 className="text-xs font-bold text-cyan-500 uppercase tracking-widest border-b pb-2 flex items-center gap-2">
                        <MousePointer2 size={14} />
-                       5. Behavior Pattern Simulation (v36.0)
+                       5. Behavior Pattern Simulation (v41.0)
                      </h4>
                      
                      {/* Engagement Level Preset */}
@@ -26078,5 +26078,5 @@ export default function App() {
   );
 }
 
-// v36.0 Build Trigger - GA4 Attribution Fix, Realistic Device Distribution, Debug Logging
+// v41.0 Build Trigger - GA4 Attribution Fix, Realistic Device Distribution, Debug Logging
 // v41.0 Traffic Mode Optimizer with Pulse configuration
